@@ -6,10 +6,8 @@ from external.sequencing.config import SequencingEndpoints
 
 def job_status_reporting(sequencing_token, sequencing_job_id, status,
                          completion_status=None, error_message=None,
-                         output_files=None, attributes=None, callback=None, uri=None):
-    if uri is None:
-        uri = SequencingEndpoints.job_status_notification
-
+                         output_files=None, attributes=None, callback=None,
+                         uri=SequencingEndpoints.job_status_notification):
     url = '{0}'.format(uri, sequencing_token)
 
     data = {
@@ -22,8 +20,12 @@ def job_status_reporting(sequencing_token, sequencing_job_id, status,
         'callback': callback
     }
 
-    req = urllib2.Request(url)
-    req.add_header('Authorization', 'Bearer %s' % sequencing_token)
-    req.add_header('Content-Type', 'application/json')
+    headers = {
+        'Authorization': 'Bearer %s' % sequencing_token,
+        'Content-Type': 'application/json'
+    }
 
-    return urllib2.urlopen(req, json.dumps(data))
+    request = urllib2.Request(url, data=json.dumps(data), headers=headers)
+    response = urllib2.urlopen(request)
+
+    return request, response

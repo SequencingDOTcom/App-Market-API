@@ -1,13 +1,9 @@
 from rest_framework.decorators import api_view
 
-from django.http import HttpResponse, JsonResponse
+from django.http import JsonResponse
 from django.shortcuts import render
 
 from external.sequencing.config import SequencingEndpoints, DefaultConfigs
-
-import urllib2
-
-import json
 
 from external.sequencing.utils import file, job
 
@@ -24,21 +20,9 @@ def dev_genetic_file_retrieval_test(request):
     uri = payload['uri']
     seq_auth_token = payload['sequencingAuthenticationToken']
 
-    raw_req = """
-Request Method: GET
+    request, response = file.retrieve_file(data_file_id=file_id, sequencing_token=seq_auth_token, uri=uri)
 
-Request URL: {0}?id={1}
-
-User-Agent: Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.11 (KHTML, like Gecko) Chrome/23.0.1271.64 Safari/537.11
-
-Authorization: Bearer {2}
-
-Accept: application/octet-stream
-              """.format(uri, file_id, seq_auth_token)
-
-    resp = file.retrieve_file(data_file_id=file_id, sequencing_token=seq_auth_token, uri=uri)
-
-    return JsonResponse({'request': raw_req, 'response': str(resp.info())})
+    return JsonResponse({'request': __request_info(request), 'response': str(response.info())})
 
 
 @api_view(['POST'])
@@ -55,14 +39,19 @@ def dev_job_status_notification_test(request):
     attributes = payload['attributes']
     callback = payload['callback']
 
-    resp = job.job_status_reporting(sequencing_token=seq_auth_token,
-                             attributes=attributes,
-                             completion_status=completion_status,
-                             error_message=error_message,
-                             sequencing_job_id=seq_job_id,
-                             status=status,
-                             output_files=output_files,
-                             callback=callback,
-                             uri=uri)
+    request, response = job.job_status_reporting(sequencing_token=seq_auth_token,
+                                                 attributes=attributes,
+                                                 completion_status=completion_status,
+                                                 error_message=error_message,
+                                                 sequencing_job_id=seq_job_id,
+                                                 status=status,
+                                                 output_files=output_files,
+                                                 callback=callback,
+                                                 uri=uri)
 
-    return JsonResponse({'request': '', 'response': resp})
+    return JsonResponse({'request': __request_info(request), 'response': str(response.info())})
+
+
+def __request_info(request):
+    return "Request Method: {0}\nRequest URL: {1}\nHeaders: {2}\n".format(request.get_method(),
+                                                                          request.get_full_url(), request.headers)
