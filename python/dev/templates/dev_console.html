@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.5/css/bootstrap.min.css"
+          integrity="sha384-AysaV+vQoT3kOAXZkl02PThvDr8HYKPZhNT5h/CXfBThSRXQ6jW5DO2ekP5ViFdi" crossorigin="anonymous">
+    <meta charset="UTF-8">
+    <title>Development console</title>
+
+    <style>
+        html {
+          font-size: 14px;
+        }
+
+        @include media-breakpoint-up(sm) {
+          html {
+            font-size: 16px;
+          }
+        }
+
+        @include media-breakpoint-up(md) {
+          html {
+            font-size: 20px;
+          }
+        }
+
+        @include media-breakpoint-up(lg) {
+          html {
+            font-size: 28px;
+          }
+        }
+
+        .card {
+            border: 0;
+        }
+        .card-header {
+            border: 0;
+        }
+
+    </style>
+</head>
+<body>
+
+<div id="accordion" role="tablist" aria-multiselectable="true" class="container" style="width: 700px;">
+    <div class="card">
+        <div class="card-header" role="tab" id="headingOne">
+            <h5 class="mb-0">
+                <a data-toggle="collapse" href="#collapseOne" aria-expanded="true"
+                   aria-controls="collapseOne"> Sequencing genetic file retrieval test
+                </a>
+            </h5>
+        </div>
+
+        <div id="collapseOne" class="collapse in" role="tabpanel" aria-labelledby="headingOne">
+            <div class="card-block">
+                <div class="form-group row">
+                    <label for="seq-gfr-uri-input" class="col-xs-3 col-form-label">URI</label>
+                    <div class="col-xs-9">
+                        <input class="form-control" type="text"
+                               placeholder="{{ endpoints.file_retrieval }}"
+                               id="seq-gfr-uri-input">
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="seq-gfr-auth-token-input" class="col-xs-3 col-form-label">Sequencing authentication
+                        token</label>
+                    <div class="col-xs-9">
+                        <input class="form-control" type="text"
+                               placeholder="{{ configs.api_key }}"
+                               id="seq-gfr-auth-token-input">
+                        <small class="form-text text-muted">This token will be sent as part of "Authorization"
+                            hedear: Authorization:Bearer
+                        </small>
+                    </div>
+                </div>
+                <form>
+                    <div class="form-group row">
+                        <label for="seq-gfr-file-id-input" class="col-xs-3 col-form-label">File ID</label>
+                        <div class="col-xs-9">
+                            <input class="form-control" type="text" placeholder="{{ configs.file_id }}"
+                                   id="seq-gfr-file-id-input">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="seq-gfr-req">Request</label>
+                        <textarea readonly class="form-control" rows="5" id="seq-gfr-req"></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="seq-gfr-resp">Response</label>
+                        <textarea readonly class="form-control" rows="5" id="seq-gfr-resp"></textarea>
+                    </div>
+                    <button type="button" class="btn btn-primary" onclick="fileRetrievalTest()">Test</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-header" role="tab" id="headingTwo">
+            <h5 class="mb-0">
+                <a class="collapsed" data-toggle="collapse" href="#collapseTwo"
+                   aria-expanded="false" aria-controls="collapseTwo">
+                    Sequencing job status notification test
+                </a>
+            </h5>
+        </div>
+        <div id="collapseTwo" class="collapse" role="tabpanel" aria-labelledby="headingTwo">
+            <div class="card-block">
+                <form>
+                    <div class="form-group row">
+                        <label for="seq-jsn-uri-input" class="col-xs-3 col-form-label">URI</label>
+                        <div class="col-xs-9">
+                            <input class="form-control" type="text"
+                                   placeholder="{{ endpoints.job_status_notification }}"
+                                   id="seq-jsn-uri-input">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="seq-jsn-auth-token-input" class="col-xs-3 col-form-label">Sequencing authentication
+                            token</label>
+                        <div class="col-xs-9">
+                            <input class="form-control" type="text"
+                                   placeholder="{{ configs.api_key }}"
+                                   id="seq-jsn-auth-token-input">
+                            <small class="form-text text-muted">This token will be sent as part of "Authorization"
+                                hedear: Authorization:Bearer
+                            </small>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="seq-jsn-job-id-input" class="col-xs-3 col-form-label">Sequencing job id</label>
+                        <div class="col-xs-9">
+                            <input class="form-control" type="text"
+                                   id="seq-jsn-job-id-input">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="seq-jsn-processing-status" class="col-xs-3 col-form-label">Processing status</label>
+                        <div class="col-xs-9">
+                            <select class="form-control" id="seq-jsn-processing-status">
+                                <option value="0">running</option>
+                                <option value="1">completed</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="seq-jsn-completion-status" class="col-xs-3 col-form-label">Completion status</label>
+                        <div class="col-xs-9">
+                            <select class="form-control" id="seq-jsn-completion-status">
+                                <option value="0">success</option>
+                                <option value="1">general error, unknown reason</option>
+                                <option value="2">error downloading genetic data file</option>
+                                <option value="3">error processing genetic data file</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="seq-jsn-error-message-input" class="col-xs-3 col-form-label">Error message</label>
+                        <div class="col-xs-9">
+                            <input class="form-control" type="text"
+                                   id="seq-jsn-error-message-input">
+                            <small class="form-text text-muted">Extra error message if completion
+                                status error
+                            </small>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="seq-jsn-output-files-table" class="col-xs-3 col-form-label">Output files</label>
+                        <div class="col-xs-9">
+                            <div class="row clearfix">
+                                <div class="col-md-12 column">
+                                    <table class="table table-bordered table-hover" id="seq-jsn-output-files-table">
+                                        <tbody>
+                                        <tr>
+                                            <td>
+                                                <input type="text" placeholder="File description" class="form-control"/>
+                                            </td>
+                                            <td>
+                                                <input type="text" placeholder="URL to the appropriate resource"
+                                                       class="form-control"/>
+                                            </td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            <button type="button" class="pull-right btn btn-default"
+                                    onclick="addRow('seq-jsn-output-files-table')">+
+                            </button>
+                            <button type="button" class="pull-right btn btn-default"
+                                    onclick="deleteRow('seq-jsn-output-files-table')">-
+                            </button>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="seq-jsn-attributes-table" class="col-xs-3 col-form-label">Additional specific
+                            attributes that
+                            needs
+                            to
+                            be transferred to 3rd party</label>
+                        <div class="col-xs-9">
+                            <div class="row clearfix">
+                                <div class="col-md-12 column">
+                                    <table class="table table-bordered table-hover" id="seq-jsn-attributes-table">
+                                        <tbody>
+                                        <tr>
+                                            <td>
+                                                <input type="text" placeholder="Key" class="form-control"/>
+                                            </td>
+                                            <td>
+                                                <input type="text" placeholder="Value"
+                                                       class="form-control"/>
+                                            </td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            <button type="button" class="pull-right btn btn-default"
+                                    onclick="addRow('seq-jsn-attributes-table')">+
+                            </button>
+                            <button type="button" class="pull-right btn btn-default"
+                                    onclick="deleteRow('seq-jsn-attributes-table')">-
+                            </button>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="seq-jsn-callback-list" class="col-xs-3 col-form-label">Callback</label>
+                        <div class="col-xs-9">
+                            <ul class="list-group" id="seq-jsn-callback-list">
+                                <li class="list-group-item"><input type="text" placeholder="url" class="form-control"/>
+                                </li>
+                                <li class="list-group-item"><input type="text" placeholder="username"
+                                                                   class="form-control"/>
+                                </li>
+                                <li class="list-group-item"><input type="text" placeholder="password"
+                                                                   class="form-control"/>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="seq-jsn-req">Request</label>
+                        <textarea readonly class="form-control" rows="5"
+                                  id="seq-jsn-req"></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="seq-jsn-resp">Response</label>
+                        <textarea readonly class="form-control" rows="5"
+                                  id="seq-jsn-resp"></textarea>
+                    </div>
+                    <button type="button" class="btn btn-primary" onclick="seqJobStatusNotificationTest()">Test</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"
+        integrity="sha384-3ceskX3iaEnIogmQchP8opvBy3Mi7Ce34nWjpBIwVTHfGYWQS9jwHDVRnpKKHJg7"
+        crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.3.7/js/tether.min.js"
+        integrity="sha384-XTs3FgkjiBgo8qjEjBk0tGmf3wPrWtA6coPfQDfFEY8AnYJwjalXCiosYRBIBZX8"
+        crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.5/js/bootstrap.min.js"
+        integrity="sha384-BLiI7JTZm+JWlgKa0M0kGRpJbF2J8q+qreVrKBC47e3K6BW78kGLrCkeRX6I9RoK"
+        crossorigin="anonymous"></script>
+
+<script>
+function addRow(tableID) {
+    var table = document.getElementById(tableID);
+
+    if (!table) return;
+
+    var rows = table.rows.length;
+
+
+    var newRow = table.rows[rows-1].cloneNode(true);
+
+    // Now get the inputs and modify their names
+    var inputs = newRow.getElementsByTagName('input');
+
+    for (var i=0, iLen=inputs.length; i<iLen; i++) {
+        // Update inputs[i]
+    }
+
+    // Add the new row to the tBody (required for IE)
+    var tBody = table.tBodies[0];
+    tBody.insertBefore(newRow, tBody.lastChild);
+}
+
+function deleteRow(tableID) {
+    var table = document.getElementById(tableID);
+
+    if (!table) return;
+
+    var rows = table.rows.length;
+    if (rows <= 1)
+        return;
+
+    table.deleteRow(rows-1);
+}
+
+function fileRetrievalTest() {
+    var uriInput = document.getElementById('seq-gfr-uri-input');
+    var seqAuthTokenInput = document.getElementById('seq-gfr-auth-token-input');
+    var fileIdInput = document.getElementById('seq-gfr-file-id-input');
+    var requestTextarea = document.getElementById('seq-gfr-req');
+    var responseTextarea = document.getElementById('seq-gfr-resp');
+
+    var uri = getInputValueOrDefaultPlaceholder(uriInput);
+    var seqAuthToken = getInputValueOrDefaultPlaceholder(seqAuthTokenInput);
+    var fileId = getInputValueOrDefaultPlaceholder(fileIdInput);
+
+    $.ajax({
+        type: 'POST',
+        dataType: 'json',
+        url: '/dev/genetic_file_retrieval_test',
+        data: {
+            uri: uri,
+            sequencingAuthenticationToken: seqAuthToken,
+            id: fileId,
+        },
+        success: function (response) {
+            requestTextarea.value = response.request;
+            responseTextarea.value = response.response;
+        },
+        error: function (response) {
+            requestTextarea.value = response.request;
+            responseTextarea.value = response.response;
+        }
+    });
+
+}
+
+function seqJobStatusNotificationTest() {
+    var uriInput = document.getElementById('seq-jsn-uri-input');
+    var seqAuthTokenInput = document.getElementById('seq-jsn-auth-token-input');
+    var seqJobIdInput = document.getElementById('seq-jsn-job-id-input');
+    var processingStatusSelect = document.getElementById('seq-jsn-processing-status');
+    var completionStatusSelect = document.getElementById('seq-jsn-completion-status');
+    var errorMessageInput = document.getElementById('seq-jsn-error-message-input');
+    var outputFilesTable = document.getElementById('seq-jsn-output-files-table');
+    var attributesTable = document.getElementById('seq-jsn-attributes-table');
+    var callbackList = document.getElementById('seq-jsn-callback-list').getElementsByTagName("li");
+    var requestTextarea = document.getElementById('seq-jsn-req');
+    var responseTextarea = document.getElementById('seq-jsn-resp');
+
+
+    var uri = getInputValueOrDefaultPlaceholder(uriInput);
+    var seqAuthToken = getInputValueOrDefaultPlaceholder(seqAuthTokenInput);
+    var seqJobId = getInputValueOrDefaultPlaceholder(seqJobIdInput);
+    var processingStatus = processingStatusSelect.value;
+    var completionStatus = completionStatusSelect.value;
+    var errorMessage = errorMessageInput.length != 0 ? errorMessageInput.value : null;
+
+    var outputFiles = mapKeyValueTable(outputFilesTable);
+    var attributes = mapKeyValueTable(attributesTable);
+    var callback = {
+        'url': callbackList[0].children[0].value,
+        'username': callbackList[1].children[0].value,
+        'password': callbackList[2].children[0].value,
+    };
+
+    console.log(outputFiles);
+    $.ajax({
+        type: 'POST',
+        dataType: 'json',
+        url: '/dev/job_status_notification_test',
+        data: {
+            uri: uri,
+            sequencingJobId: seqJobId,
+            sequencingAuthenticationToken: seqAuthToken,
+            status: processingStatus,
+            completionStatus: completionStatus,
+            errorMessage: errorMessage,
+            outputFiles: JSON.stringify(outputFiles),
+            attributes: JSON.stringify(attributes),
+            callback: JSON.stringify(callback),
+        },
+        success: function (response) {
+            requestTextarea.value = response.request;
+            responseTextarea.value = response.response;
+        },
+        error: function (response) {
+            requestTextarea.value = response.request;
+            responseTextarea.value = response.response;
+        }
+    });
+}
+
+function getInputValueOrDefaultPlaceholder(input) {
+    return input.value.length != 0 ? input.value : input.placeholder;
+}
+
+function mapKeyValueTable(table) {
+    var map = {};
+    for (var i = 0, row; row = table.rows[i]; i++) {
+      var key = row.cells[0].children[0].value;
+      var val = row.cells[1].children[0].value;
+      map[key] = val;
+    }
+    return map;
+}
+</script>
+</body>
+</html>

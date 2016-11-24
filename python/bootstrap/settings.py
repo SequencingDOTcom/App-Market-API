@@ -38,6 +38,7 @@ INSTALLED_APPS = (
     'rest_framework',
     'rest_framework.authtoken',
     'external',
+    'dev',
 )
 
 MIDDLEWARE_CLASSES = (
