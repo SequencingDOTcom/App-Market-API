@@ -1,5 +1,6 @@
 from rest_framework.decorators import api_view, authentication_classes, permission_classes
 from rest_framework.permissions import IsAuthenticated
+from django.shortcuts import render
 
 from external.sequencing import auth
 from external.sequencing.payload.request import SequencingAuthenticationRequest, SequencingJobSubmissionRequest, \
@@ -44,6 +45,8 @@ def sequencing_job_register(request):
         application_id = seq_req.application_id
         data_file_id = seq_req.data_file_id
         attributes = seq_req.attributes
+
+        # print file.retrieve_file(data_file_id, sequencing_token)
 
         # ...
     except Exception as e:
