@@ -46,7 +46,7 @@ INSTALLED_APPS = (
 )
 ```
 
-Add the following to your root *urls.py* file:
+Add the following to your root `urls.py` file:
 ```
 urlpatterns = [
     ...
@@ -69,7 +69,7 @@ INSTALLED_APPS = (
 )
 ```
 
-Add the following to your root *urls.py* file:
+Add the following to your root `urls.py` file:
 ```
 urlpatterns = [
     ...
