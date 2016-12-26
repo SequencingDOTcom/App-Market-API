@@ -17,6 +17,8 @@ Contents
 Resources
 ======================================
 * [Developer Center](https://sequencing.com/developer-center)
+* [Python drop-in bootstrap integration](https://github.com/ooliynyk/App-Market-API-integration/tree/master/python#drop-in-bootstrap-integration)
+* [Python development console usage](https://github.com/ooliynyk/App-Market-API-integration/tree/master/python#development-console-usage)
 
 Maintainers
 ======================================
