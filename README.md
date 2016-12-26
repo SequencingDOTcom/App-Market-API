@@ -10,15 +10,26 @@ Please contact gittaca@sequencing.com if you have any questions or would like to
 
 Contents
 =========================================
+* Implementations
 * Resources
 * Maintainers
 * Contribute
 
+Implementations
+======================================
+
+Currently following implementations are available. Each implementation has detailed instructions on integration within and special development console, an UI interface that allows you to test integration of your side to Sequencing.com. Information on the console is available within each language repository.
+
+Sequencing.com has console on its end as well in order to check Sequencing.com to your site integration. In order to get an access to it, please submit a Support Request.
+
+* [Python](https://github.com/SequencingDOTcom/App-Market-API-integration/tree/master/python)
+
+
 Resources
 ======================================
 * [Developer Center](https://sequencing.com/developer-center)
-* [Python drop-in bootstrap integration](https://github.com/ooliynyk/App-Market-API-integration/tree/master/python#drop-in-bootstrap-integration)
-* [Python development console usage](https://github.com/ooliynyk/App-Market-API-integration/tree/master/python#development-console-usage)
+* [Python drop-in bootstrap integration](https://github.com/SequencingDOTcom/App-Market-API-integration/tree/master/python#drop-in-bootstrap-integration)
+* [Python development console usage](https://github.com/SequencingDOTcom/App-Market-API-integration/tree/master/python#development-console-usage)
 
 Maintainers
 ======================================
