@@ -23,7 +23,9 @@ def sequencing_auth(request):
 
     session.save_session(dict(seq_auth_token=seq_req.sequencing_token,
                               seq_job_id=seq_req.seq_job_id,
-                              application_id=seq_req.application_id),
+                              application_id=seq_req.application_id,
+                              user_id=seq_req.user_id,
+                              user_details=seq_req.user_details),
                          app_token)
 
     return AuthenticationResponse(app_token)

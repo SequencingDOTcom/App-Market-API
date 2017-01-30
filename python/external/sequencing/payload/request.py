@@ -7,6 +7,8 @@ class SequencingAuthenticationRequest:
         self.sequencing_token = payload['sequencingAuthenticationToken']
         self.seq_job_id = payload['sequencingJobId']
         self.application_id = payload['applicationId']
+        self.user_id = payload['userId']
+        self.user_details = payload["userDetails"]
 
 
 class SequencingJobSubmissionRequest:
