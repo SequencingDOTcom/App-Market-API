@@ -115,7 +115,7 @@ function seqJobStatusNotificationTest() {
         },
         error: function (response) {
             requestTextarea.value = response.request;
-            responseTextarea.value = response.response;
+            responseTextarea.value = response.responseText;
         }
     });
 }
