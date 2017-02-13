@@ -1,3 +1,5 @@
+import json
+
 from rest_framework.decorators import api_view
 
 from django.http import JsonResponse
@@ -31,13 +33,13 @@ def dev_job_status_notification_test(request):
 
     uri = payload['uri']
     seq_auth_token = payload['sequencingAuthenticationToken']
-    seq_job_id = payload['sequencingJobId']
-    status = payload['status']
-    completion_status = payload['completionStatus']
+    seq_job_id = long(payload['sequencingJobId'])
+    status = int(payload['status'])
+    completion_status = int(payload['completionStatus'])
     error_message = payload['errorMessage']
-    output_files = payload['outputFiles']
-    attributes = payload['attributes']
-    callback = payload['callback']
+    output_files = json.loads(payload['outputFiles'])
+    attributes = json.loads(payload['attributes'])
+    callback = json.loads(payload['callback'])
 
     request, response = job.job_status_reporting(sequencing_token=seq_auth_token,
                                                  attributes=attributes,
