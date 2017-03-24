@@ -120,6 +120,52 @@ function seqJobStatusNotificationTest() {
     });
 }
 
+function seqConnectTest() {
+    var uriInput = document.getElementById('seq-con-uri-input');
+    var clientIdInput = document.getElementById('seq-con-client-id-input');
+    var emailInput = document.getElementById('seq-con-email-input');
+    var outputFilesTable = document.getElementById('seq-con-output-files-table');
+    var redirectUriInput = document.getElementById('seq-con-redirect-uri-input');
+    var connectIframe = document.getElementById('seq-con-iframe');
+
+
+    var uri = getInputValueOrDefaultPlaceholder(uriInput);
+    var clientId = getInputValueOrDefaultPlaceholder(clientIdInput);
+    var email = getInputValueOrDefaultPlaceholder(emailInput);
+    var redirectUri = getInputValueOrDefaultPlaceholder(redirectUriInput);
+
+    var outputFiles = [];
+    for (var i = 0, row; row = outputFilesTable.rows[i]; i++){
+        var file = {
+            'name': row.cells[0].children[0].value,
+            'type': row.cells[1].children[0].value,
+            'url': row.cells[2].children[0].value,
+            'hashType': row.cells[3].children[0].value,
+            'hashValue': row.cells[4].children[0].value,
+            'size': row.cells[5].children[0].value
+        };
+        outputFiles.push(file);
+    }
+
+    $.ajax({
+        type: 'POST',
+        dataType: 'json',
+        url: '/dev/connect_to_sequencing_test',
+        data: {
+            uri: uri,
+            client_id: clientId,
+            email: email,
+            files: JSON.stringify(outputFiles),
+            redirect_uri: redirectUri,
+        },
+        success: function (response) {
+            connectIframe.src = response.connect_link;
+        },
+        error: function (response) {
+        }
+    });
+}
+
 function getInputValueOrDefaultPlaceholder(input) {
     return input.value.length != 0 ? input.value : input.placeholder;
 }

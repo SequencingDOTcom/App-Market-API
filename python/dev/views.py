@@ -7,7 +7,7 @@ from django.shortcuts import render
 
 from external.sequencing.config import SequencingEndpoints, DefaultConfigs
 
-from external.sequencing.utils import file, job
+from external.sequencing.utils import file, job, connect
 
 
 def dev_console(request):
@@ -52,6 +52,20 @@ def dev_job_status_notification_test(request):
                                                  uri=uri)
 
     return JsonResponse({'request': __request_info(request), 'response': str(response.info())})
+
+
+@api_view(['POST'])
+def dev_connect_to_test(request):
+    payload = request.data
+    uri = payload['uri'];
+    data = {
+        'client_id': payload['client_id'],
+        'email': payload['email'],
+        'files': json.loads(payload['files']),
+        'redirect_uri': payload['redirect_uri'],
+    }
+
+    return JsonResponse({'connect_link': connect.get_connect_to_link(data, uri)});
 
 
 def __request_info(request):

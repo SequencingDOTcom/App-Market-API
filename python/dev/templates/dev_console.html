@@ -228,6 +228,95 @@
             </div>
         </div>
     </div>
+
+    <div class="card">
+        <div class="card-header" role="tab" id="headingThree">
+            <h5 class="mb-0">
+                <a class="collapsed" data-toggle="collapse" href="#collapseThree" aria-expanded="false"
+                   aria-controls="collapseThree"> Connect to Sequencing.com
+                </a>
+            </h5>
+        </div>
+
+        <div id="collapseThree" class="collapse" role="tabpanel" aria-labelledby="headingThree">
+            <div class="card-block">
+                <form>
+                    <div class="form-group row">
+                        <label for="seq-jsn-uri-input" class="col-xs-3 col-form-label">URI</label>
+                        <div class="col-xs-9">
+                            <input class="form-control" type="text"
+                                   placeholder="{{ endpoints.connect_to }}"
+                                   id="seq-con-uri-input">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="seq-con-client-id-input" class="col-xs-3 col-form-label">Client Id</label>
+                        <div class="col-xs-9">
+                            <input class="form-control" type="text"
+                                   placeholder="{{ configs.api_key }}"
+                                   id="seq-con-client-id-input">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="seq-con-email-input" class="col-xs-3 col-form-label">email</label>
+                        <div class="col-xs-9">
+                            <input class="form-control" type="text" id="seq-con-email-input">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="seq-con-output-files-table" class="col-xs-3 col-form-label">Files</label>
+                        <div class="col-xs-9">
+                            <div class="row clearfix">
+                                <div class="col-md-12 column">
+                                    <table class="table table-bordered table-hover" id="seq-con-output-files-table">
+                                        <tbody>
+                                        <tr>
+                                            <td>
+                                                <input type="text" placeholder="File name" class="form-control"/>
+                                            </td>
+                                            <td>
+                                                <select class="form-control">
+                                                    <option value="0">genetic data file</option>
+                                                    <option value="1">report data file</option>
+                                                </select>
+                                            </td>
+                                            <td>
+                                                <input type="text" placeholder="File url" class="form-control"/>
+                                            </td>
+                                            <td>
+                                                <input type="text" placeholder="hash type" class="form-control"/>
+                                            </td>
+                                            <td>
+                                                <input type="text" placeholder="hash value" class="form-control"/>
+                                            </td>
+                                            <td>
+                                                <input type="text" placeholder="size" class="form-control"/>
+                                            </td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            <button type="button" class="pull-right btn btn-default"
+                                    onclick="addRow('seq-con-output-files-table')">+
+                            </button>
+                            <button type="button" class="pull-right btn btn-default"
+                                    onclick="deleteRow('seq-con-output-files-table')">-
+                            </button>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="seq-con-redirect-uri-input" class="col-xs-3 col-form-label">redirect url</label>
+                        <div class="col-xs-9">
+                            <input class="form-control" type="text" id="seq-con-redirect-uri-input">
+                        </div>
+                    </div>
+                    <button type="button" class="btn btn-primary" onclick="seqConnectTest()">Test</button>
+                    <iframe id="seq-con-iframe" src="" style="width: 640px; height: 480px;"></iframe>
+                </form>
+            </div>
+        </div>
+    </div>
 </div>
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"
