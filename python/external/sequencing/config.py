@@ -4,6 +4,7 @@ class SequencingEndpoints():
 
     job_status_notification = 'https://api.sequencing.com/v1/TpUpdateExternalJob'
 
+    connect_to = 'https://sequencing.com/connect/?'
 
 class DefaultConfigs():
 
