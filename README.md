@@ -20,6 +20,8 @@ Implementations
 
 Currently following implementations are available. Each implementation has detailed instructions on integration within and special development console, an UI interface that allows you to test integration of your side to Sequencing.com. Information on the console is available within each language repository.
 
+Please review the [App Market API Guide](https://sequencing.com/developer-documentation/api-guides/app-market-api) for full documentation.
+
 Sequencing.com has console on its end as well in order to check Sequencing.com to your site integration. In order to get an access to it, please submit a Support Request.
 
 * [Python](https://github.com/SequencingDOTcom/App-Market-API-integration/tree/master/python)
@@ -27,6 +29,7 @@ Sequencing.com has console on its end as well in order to check Sequencing.com t
 
 Resources
 ======================================
+* [App Market API Guide](https://sequencing.com/developer-documentation/api-guides/app-market-api)
 * [Developer Center](https://sequencing.com/developer-center)
 * [Python drop-in bootstrap integration](https://github.com/SequencingDOTcom/App-Market-API-integration/tree/master/python#drop-in-bootstrap-integration)
 * [Python development console usage](https://github.com/SequencingDOTcom/App-Market-API-integration/tree/master/python#development-console-usage)
